@@ -1,114 +1,91 @@
-# Литературный AI-помощник
+### Diagram
 
-Учебное API-приложение на Python для вопросов о русской литературе. Готовые ответы возвращаются из FAQ, остальные вопросы отправляются локальной модели `qwen3.5:4b` через Ollama. Вопросы и ответы сохраняются в PostgreSQL и используются как история диалога.
+![decompose.png](Screen%20for%20decompose/decompose.png)
 
-## Возможности
+## Проверка FAQ
 
-- API на FastAPI и документация Swagger;
-- локальная LLM через Ollama;
-- отдельные FAQ-ответы о писателях;
-- сохранение вопросов и ответов в PostgreSQL;
-- передача модели последних 10 сообщений;
-- настройка температуры ответа;
-- проверка данных через Pydantic;
-- обработка ошибок подключения и пустых ответов.
 
-## Как это работает
+### Request
 
-1. Пользователь отправляет вопрос в `POST /dialog`.
-2. Приложение проверяет FAQ.
-3. Если готовый ответ найден, он возвращается без Ollama.
-4. Иначе из PostgreSQL загружаются последние 10 сообщений.
-5. История и новый вопрос передаются модели.
-6. Новый вопрос и ответ сохраняются в таблицу `messages`.
+![1.png](Screen%20for%20decompose/1.png)
 
-## Технологии
+### Answer
 
-Python, FastAPI, Uvicorn, Pydantic, SQLAlchemy, PostgreSQL, psycopg, python-dotenv, OpenAI Python SDK, Ollama и Qwen 3.5 4B.
+![2.png](Screen%20for%20decompose/2.png)
 
-## Структура
 
-```text
-PythonProject3/
-├── main.py          # API, FAQ, история и обращение к Ollama
-├── database.py      # подключение к PostgreSQL
-├── requirements.txt # зависимости Python
-├── .env             # настройки БД (не публиковать)
-└── README.md
-```
+## Проверка ветки Ollama
 
-Таблица `messages` создаётся автоматически и содержит:
 
-| Поле | Значение |
-|---|---|
-| `id` | номер сообщения |
-| `role` | `user` или `assistant` |
-| `content` | текст сообщения |
+### Request
 
-Установите Ollama ollama pull qwen3.5:4b
+![img_2.png](Screen%20for%20decompose/img_2.png)
 
-## Запуск
+### Answer
 
-```powershell
-.\.venv\Scripts\python.exe -m uvicorn main:app --reload --port 8002
-```
+![img_3.png](Screen%20for%20decompose/img_3.png)
 
-Swagger: http://127.0.0.1:8002/docs
 
-## API
+## Проверка вопроса о произведении
 
-### `POST /dialog`
 
-Принимает вопрос. Заголовок `temperature` задаёт случайность ответа. Для фактических вопросов рекомендуется `0.1`.
+### Request
 
-```json
-{
-  "post_request": "Расскажи о творчестве Александра Пушкина"
-}
-```
+![img_4.png](Screen%20for%20decompose/img_4.png)
 
-Ответ Ollama:
+### Answer
 
-```json
-{
-  "temperature": 0.1,
-  "source": "Ollama",
-  "answer": "Александр Пушкин — русский поэт, прозаик и драматург."
-}
-```
+![img_5.png](Screen%20for%20decompose/img_5.png)
 
-FAQ-запрос:
 
-```json
-{
-  "post_request": "Расскажи мне про писателя Достоевский"
-}
-```
+## Проверка истории диалога
 
-FAQ-ответ:
 
-```json
-{
-  "temperature": 0.1,
-  "source": "FAQ",
-  "info": {
-    "description": "Фёдор Михайлович Достоевский — русский писатель."
-  }
-}
-```
+### Request
 
-`source` показывает источник ответа: `FAQ` или `Ollama`.
+![3.png](Screen%20for%20decompose/3.png)
 
-## История
+### Answer 
 
-`save_messages()` записывает вопрос с ролью `user` и ответ с ролью `assistant`. `load_history()` получает последние 10 сообщений, располагает их от старых к новым и передаёт модели.
+![4.png](Screen%20for%20decompose/4.png)
 
-Сейчас история общая для всех запросов. При нескольких пользователях сообщения будут смешиваться. FAQ-ответы в историю не сохраняются.
 
-## Коды ответа
+## Проверка сохранения истории в PostgreSQL
 
-- `200` — успех;
-- `422` — неправильные входные данные;
-- `502` — Ollama вернула пустой ответ;
-- `503` — Ollama недоступна;
-- `500` — ошибка приложения или базы данных.
+
+### Answer 
+
+![5.png](Screen%20for%20decompose/5.png)
+
+
+## Проверка минимальной температуры
+
+
+### Request
+
+![6.png](Screen%20for%20decompose/6.png)
+
+
+### Answer 1
+
+![7.png](Screen%20for%20decompose/7.png)
+
+### Answer 2
+
+![888.png](Screen%20for%20decompose/888.png)
+
+
+## Проверка максимальной температуры
+
+
+### Request
+
+![9.png](Screen%20for%20decompose/9.png)
+
+### Answer 1
+
+![10.png](Screen%20for%20decompose/10.png)
+
+### Answer 2
+
+![11.png](Screen%20for%20decompose/11.png)
