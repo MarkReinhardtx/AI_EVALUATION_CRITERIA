@@ -12,25 +12,21 @@ from database import Base, SessionLocal, engine
 class Message(Base):
     __tablename__ = "messages"
 
-    # Уникальный номер сообщения
+
     id: Mapped[int] = mapped_column(
         primary_key=True
     )
 
-    # Автор сообщения: user или assistant
+
     role: Mapped[str]
 
-    # Текст сообщения
+
     content: Mapped[str]
 
 
-# Создаём таблицы, если их ещё нет
 Base.metadata.create_all(engine)
 
 
-# =========================
-# 3. МОДЕЛИ ЗАПРОСОВ И ОТВЕТОВ
-# =========================
 
 class GenerateRequest(BaseModel):
     post_request: str = Field(
@@ -55,11 +51,6 @@ class GenerateResponse(BaseModel):
 
 
 
-
-# =========================
-# 4. НАСТРОЙКА FASTAPI И OLLAMA
-# =========================
-
 app = FastAPI(
     title="LLM API",
     description=(
@@ -76,12 +67,8 @@ client = OpenAI(
 )
 
 
-# =========================
-# 5. ГОТОВЫЕ ОТВЕТЫ FAQ
-# =========================
-
 FAQ_ANSWERS = {
-    "достоевский": FAQDescription(
+    "достоевского": FAQDescription(
         description=(
             "Фёдор Михайлович Достоевский — русский писатель, "
             "автор произведений «Преступление и наказание» "
@@ -97,10 +84,6 @@ FAQ_ANSWERS = {
 }
 
 
-
-# =========================
-# 6. РАБОТА С ИСТОРИЕЙ
-# =========================
 
 def load_history() -> list[dict[str, str]]:
     with SessionLocal() as db:
@@ -129,7 +112,6 @@ def save_messages(
     user_text: str,
     assistant_text: str,
 ) -> None:
-    """Сохраняет вопрос пользователя и ответ Ollama."""
 
     user_message = Message(
         role="user",
@@ -150,10 +132,6 @@ def save_messages(
         db.commit()
 
 
-# =========================
-# 7. ENDPOINT: ГЛАВНАЯ СТРАНИЦА
-# =========================
-
 @app.get("/")
 def check():
     return {
@@ -161,14 +139,6 @@ def check():
     }
 
 
-# =========================
-# 8. ENDPOINT: СОЗДАНИЕ ДИАЛОГА
-# ========================
-
-
-# =========================
-# 9. ENDPOINT: ОТПРАВКА СООБЩЕНИЯ
-# =========================
 
 @app.post("/dialog",
     response_model=GenerateResponseFAQ | GenerateResponse,
@@ -193,9 +163,6 @@ def send_message(
         "Расскажи мне про писателя"
     ).casefold()
 
-    # =========================
-    # ПРОВЕРКА FAQ
-    # =========================
 
     if faq_phrase in normalized_request:
         for autor_name, faq_answer in FAQ_ANSWERS.items():
@@ -210,9 +177,6 @@ def send_message(
 
     history = load_history()
 
-    # =========================
-    # ОБРАЩЕНИЕ К OLLAMA
-    # =========================
 
     try:
         completion = client.chat.completions.create(
@@ -232,10 +196,9 @@ def send_message(
                     ),
                 },
 
-                # Предыдущие сообщения из PostgreSQL
+
                 *history,
 
-                # Новый вопрос пользователя
                 {
                     "role": "user",
                     "content": request.post_request,
@@ -252,7 +215,7 @@ def send_message(
 
         )
 
-        # Получаем текст ответа Ollama
+
         model_answer = (
             completion.choices[0].message.content
         )
@@ -263,7 +226,6 @@ def send_message(
                 detail="Ollama вернула пустой ответ"
             )
 
-        # Сохраняем вопрос и ответ в PostgreSQL
         save_messages(
             user_text=request.post_request,
             assistant_text=model_answer,

@@ -1,0 +1,159 @@
+<mxfile host="app.diagrams.net" agent="Codex">
+  <diagram id="literature-ai" name="Декомпозиция AI-системы">
+    <mxGraphModel dx="3336" dy="2011" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1000" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" parent="1" style="text;html=1;align=center;verticalAlign=middle;fontSize=24;fontStyle=1;fontColor=#172B4D;" value="Декомпозиция литературного AI-помощника" vertex="1">
+          <mxGeometry height="50" width="720" x="340" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="user" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontSize=15;fontStyle=1;" value="Пользователь&#xa;Swagger / Postman" vertex="1">
+          <mxGeometry height="80" width="210" x="570" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="request" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=14;" value="POST /dialog&lt;br&gt;&lt;br&gt;Body: Расскажи мне про писателя Пушкин&lt;br&gt;Header: temperature" vertex="1">
+          <mxGeometry height="100" width="270" x="540" y="205" as="geometry" />
+        </mxCell>
+        <mxCell id="validation" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontSize=14;fontStyle=1;" value="FastAPI + Pydantic&#xa;Проверка входных данных" vertex="1">
+          <mxGeometry height="80" width="270" x="540" y="340" as="geometry" />
+        </mxCell>
+        <mxCell id="normalize" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontSize=14;" value="Нормализация текста&#xa;strip() + casefold()" vertex="1">
+          <mxGeometry height="75" width="270" x="540" y="455" as="geometry" />
+        </mxCell>
+        <mxCell id="router" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#FFE6CC;strokeColor=#D79B00;fontSize=14;fontStyle=1;" value="Запрос подходит&#xa;под FAQ?" vertex="1">
+          <mxGeometry height="120" width="220" x="565" y="575" as="geometry" />
+        </mxCell>
+        <mxCell id="faq" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontSize=14;fontStyle=1;" value="FAQ_ANSWERS&#xa;Поиск готового ответа" vertex="1">
+          <mxGeometry height="80" width="250" x="180" y="595" as="geometry" />
+        </mxCell>
+        <mxCell id="faqResponse" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#B7E1CD;strokeColor=#339966;fontSize=14;" value="Ответ FAQ&lt;br&gt;source = FAQ&lt;br&gt;Описание ответа" vertex="1">
+          <mxGeometry height="90" width="250" x="180" y="735" as="geometry" />
+        </mxCell>
+        <mxCell id="history" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=14;fontStyle=1;" value="load_history()&lt;br&gt;Загружает последние 10 сообщений из базы, чтобы не терять контекст в случае диалога" vertex="1">
+          <mxGeometry height="85" width="260" x="920" y="590" as="geometry" />
+        </mxCell>
+        <mxCell id="db" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#F8CECC;strokeColor=#B85450;fontSize=14;fontStyle=1;" value="PostgreSQL&#xa;таблица messages&#xa;id • role • content" vertex="1">
+          <mxGeometry height="120" width="210" x="1240" y="565" as="geometry" />
+        </mxCell>
+        <mxCell id="messages" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontSize=14;" value="&lt;strong&gt;Подготовка запроса для модели&lt;/strong&gt;&lt;br&gt;&lt;strong&gt;Инструкция + история переписки + новый вопрос&lt;/strong&gt;" vertex="1">
+          <mxGeometry height="90" width="260" x="920" y="725" as="geometry" />
+        </mxCell>
+        <mxCell id="sdk" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontSize=14;" value="OpenAI Python SDK&lt;br&gt;локальный запрос" vertex="1">
+          <mxGeometry height="80" width="260" x="920" y="855" as="geometry" />
+        </mxCell>
+        <mxCell id="ollama" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8CECC;strokeColor=#B85450;fontSize=15;fontStyle=1;" value="Ollama&#xa;Qwen 3.5 4B" vertex="1">
+          <mxGeometry height="80" width="260" x="920" y="975" as="geometry" />
+        </mxCell>
+        <mxCell id="check" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#FFE6CC;strokeColor=#D79B00;fontSize=14;" value="Ответ получен&#xa;и не пустой?" vertex="1">
+          <mxGeometry height="115" width="220" x="940" y="1090" as="geometry" />
+        </mxCell>
+        <mxCell id="save" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=14;" value="save_messages()&#xa;Сохранение вопроса и ответа" vertex="1">
+          <mxGeometry height="85" width="260" x="920" y="1240" as="geometry" />
+        </mxCell>
+        <mxCell id="llmResponse" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#B7E1CD;strokeColor=#339966;fontSize=14;" value="Ответ модели&lt;br&gt;source = Ollama&lt;br&gt;Описание ответа" vertex="1">
+          <mxGeometry height="85" width="210" x="650" y="1240" as="geometry" />
+        </mxCell>
+        <mxCell id="error" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8CECC;strokeColor=#B85450;fontSize=14;" value="Ошибка 502&#xa;Пустой ответ" vertex="1">
+          <mxGeometry height="75" width="190" x="1240" y="1105" as="geometry" />
+        </mxCell>
+        <mxCell id="output" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontSize=15;fontStyle=1;" value="JSON-ответ пользователю" vertex="1">
+          <mxGeometry height="75" width="390" x="480" y="1390" as="geometry" />
+        </mxCell>
+        <mxCell id="n1" parent="1" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#0052CC;strokeColor=#003D99;fontColor=#FFFFFF;fontSize=16;fontStyle=1;" value="1" vertex="1">
+          <mxGeometry height="42" width="42" x="440" y="580" as="geometry" />
+        </mxCell>
+        <mxCell id="l1" parent="1" style="text;html=1;fontSize=13;fontStyle=1;fontColor=#0052CC;" value="Оценка маршрутизации FAQ" vertex="1">
+          <mxGeometry height="30" width="180" x="440" y="635" as="geometry" />
+        </mxCell>
+        <mxCell id="n2" parent="1" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#6554C0;strokeColor=#403294;fontColor=#FFFFFF;fontSize=16;fontStyle=1;" value="2" vertex="1">
+          <mxGeometry height="42" width="42" x="1200" y="715" as="geometry" />
+        </mxCell>
+        <mxCell id="l2" parent="1" style="text;html=1;fontSize=13;fontStyle=1;fontColor=#6554C0;" value="Оценка контекста и истории" vertex="1">
+          <mxGeometry height="30" width="210" x="1190" y="755" as="geometry" />
+        </mxCell>
+        <mxCell id="n3" parent="1" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#DE350B;strokeColor=#BF2600;fontColor=#FFFFFF;fontSize=16;fontStyle=1;" value="3" vertex="1">
+          <mxGeometry height="42" width="42" x="1205" y="970" as="geometry" />
+        </mxCell>
+        <mxCell id="l3" parent="1" style="text;html=1;fontSize=13;fontStyle=1;fontColor=#DE350B;" value="Оценка ответа LLM" vertex="1">
+          <mxGeometry height="30" width="180" x="1195" y="1015" as="geometry" />
+        </mxCell>
+        <mxCell id="n4" parent="1" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#00875A;strokeColor=#006644;fontColor=#FFFFFF;fontSize=16;fontStyle=1;" value="4" vertex="1">
+          <mxGeometry height="42" width="42" x="410" y="1395" as="geometry" />
+        </mxCell>
+        <mxCell id="l4" parent="1" style="text;html=1;fontSize=13;fontStyle=1;fontColor=#00875A;" value="Оценка итогового ответа системы" vertex="1">
+          <mxGeometry height="30" width="245" x="210" y="1435" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="user" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;" target="request">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="request" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;" target="validation">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="validation" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;" target="normalize">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="normalize" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;" target="router">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" edge="1" parent="1" source="router" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;fontSize=13;fontStyle=1;" target="faq" value="Да">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" edge="1" parent="1" source="faq" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;" target="faqResponse">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" edge="1" parent="1" source="router" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;fontSize=13;fontStyle=1;" target="history" value="Нет">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e8" edge="1" parent="1" source="db" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;fontSize=12;" target="history" value="чтение">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e9" edge="1" parent="1" source="history" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;" target="messages">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e10" edge="1" parent="1" source="messages" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;" target="sdk">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e11" edge="1" parent="1" source="sdk" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;" target="ollama">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e12" edge="1" parent="1" source="ollama" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;" target="check">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e13" edge="1" parent="1" source="check" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;fontSize=13;fontStyle=1;" target="save" value="Да">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e14" edge="1" parent="1" source="check" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;fontSize=13;fontStyle=1;" target="error" value="Нет">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e15" edge="1" parent="1" source="save" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;fontSize=12;entryX=1;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" target="db" value="запись">
+          <mxGeometry relative="1" x="-0.0642" as="geometry">
+            <Array as="points">
+              <mxPoint x="1510" y="1282.5" />
+              <mxPoint x="1510" y="625" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e16" edge="1" parent="1" source="save" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;" target="llmResponse">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e17" edge="1" parent="1" source="faqResponse" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;" target="output">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="305" y="1428" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e18" edge="1" parent="1" source="llmResponse" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;" target="output">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e19" edge="1" parent="1" source="error" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;dashed=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" target="output">
+          <mxGeometry relative="1" x="0.2281" as="geometry">
+            <Array as="points">
+              <mxPoint x="1470" y="1142.5" />
+              <mxPoint x="1470" y="1427.5" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
